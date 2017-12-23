@@ -59,9 +59,9 @@
 				6EE417EE1FEE6D6700C9F1CC /* AppDelegate.swift */,
 				6EE417F01FEE6D6700C9F1CC /* ViewController.swift */,
 				6EE417F21FEE6D6700C9F1CC /* Main.storyboard */,
+				6EE417F71FEE6D6700C9F1CC /* LaunchScreen.storyboard */,
 				6EE417F51FEE6D6700C9F1CC /* Assets.xcassets */,
 				6EE418001FEE6DA700C9F1CC /* ARCADECLASSIC.TTF */,
-				6EE417F71FEE6D6700C9F1CC /* LaunchScreen.storyboard */,
 				6EE417FA1FEE6D6700C9F1CC /* Info.plist */,
 			);
 			path = "QUICK MATH";

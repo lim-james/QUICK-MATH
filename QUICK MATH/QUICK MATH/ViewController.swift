@@ -59,6 +59,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         formatScoreLabel()
+        
         mainLabel.text = "QUICK\nMATH"
         
         trueButton.frame.origin.y = height
@@ -238,7 +239,7 @@ class ViewController: UIViewController {
             })
             
             // decrease interval time
-            interval = interval < 0 ? interval - 0.05 : interval
+            interval = interval < 0 ? interval - 0.1 : interval
             timer = Timer.scheduledTimer(timeInterval: interval + 0.5, target: self, selector: #selector(self.timeEnd), userInfo: nil, repeats: false)
             UIView.animate(withDuration: interval + 0.4, delay: 0.1, options: .curveEaseOut, animations: {
                 self.timerView.frame.size.height = 0
