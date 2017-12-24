@@ -188,6 +188,7 @@
                         <outlet property="mainLabel" destination="3Nv-6h-2k4" id="tXE-3x-mWe"/>
                         <outlet property="scoreLabel" destination="ljf-Mx-K5S" id="eIT-ho-6Gh"/>
                         <outlet property="startButton" destination="a23-f0-R8D" id="xOW-8c-ybb"/>
+                        <outlet property="startLabel" destination="cmt-Ce-x08" id="YCj-3q-2DV"/>
                         <outlet property="startShadow" destination="Dk5-MI-Mdb" id="k04-XB-wtG"/>
                         <outlet property="timerView" destination="1Qk-GL-40S" id="0Ph-an-3cX"/>
                         <outlet property="trueButton" destination="g2F-1l-HBn" id="oc9-97-1yK"/>

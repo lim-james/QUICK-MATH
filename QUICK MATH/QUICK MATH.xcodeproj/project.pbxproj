@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6EA5CE571FEF46AD00478727 /* wrong.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6EA5CE561FEF46AD00478727 /* wrong.wav */; };
+		6EA5CE591FEF46B900478727 /* correct.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6EA5CE581FEF46B900478727 /* correct.wav */; };
+		6EA5CE5B1FEF4CFA00478727 /* quick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6EA5CE5A1FEF4CFA00478727 /* quick.wav */; };
 		6EE417EF1FEE6D6700C9F1CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE417EE1FEE6D6700C9F1CC /* AppDelegate.swift */; };
 		6EE417F11FEE6D6700C9F1CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE417F01FEE6D6700C9F1CC /* ViewController.swift */; };
 		6EE417F41FEE6D6700C9F1CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EE417F21FEE6D6700C9F1CC /* Main.storyboard */; };
@@ -16,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6EA5CE561FEF46AD00478727 /* wrong.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = wrong.wav; path = ../../../Downloads/wrong.wav; sourceTree = "<group>"; };
+		6EA5CE581FEF46B900478727 /* correct.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = correct.wav; path = ../../../Downloads/correct.wav; sourceTree = "<group>"; };
+		6EA5CE5A1FEF4CFA00478727 /* quick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = quick.wav; path = ../../../Downloads/quick.wav; sourceTree = "<group>"; };
 		6EE417EB1FEE6D6700C9F1CC /* QUICK MATH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QUICK MATH.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EE417EE1FEE6D6700C9F1CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6EE417F01FEE6D6700C9F1CC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +68,9 @@
 				6EE417F71FEE6D6700C9F1CC /* LaunchScreen.storyboard */,
 				6EE417F51FEE6D6700C9F1CC /* Assets.xcassets */,
 				6EE418001FEE6DA700C9F1CC /* ARCADECLASSIC.TTF */,
+				6EA5CE561FEF46AD00478727 /* wrong.wav */,
+				6EA5CE581FEF46B900478727 /* correct.wav */,
+				6EA5CE5A1FEF4CFA00478727 /* quick.wav */,
 				6EE417FA1FEE6D6700C9F1CC /* Info.plist */,
 			);
 			path = "QUICK MATH";
@@ -126,8 +135,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EA5CE591FEF46B900478727 /* correct.wav in Resources */,
 				6EE417F91FEE6D6700C9F1CC /* LaunchScreen.storyboard in Resources */,
+				6EA5CE5B1FEF4CFA00478727 /* quick.wav in Resources */,
 				6EE417F61FEE6D6700C9F1CC /* Assets.xcassets in Resources */,
+				6EA5CE571FEF46AD00478727 /* wrong.wav in Resources */,
 				6EE417F41FEE6D6700C9F1CC /* Main.storyboard in Resources */,
 				6EE418011FEE6DA700C9F1CC /* ARCADECLASSIC.TTF in Resources */,
 			);

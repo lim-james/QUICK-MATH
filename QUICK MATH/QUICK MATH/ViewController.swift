@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
     
+    // general variables
     private var width: CGFloat = 0
     private var height: CGFloat = 0
 
@@ -31,6 +33,13 @@ class ViewController: UIViewController {
     private var interval: TimeInterval = 0
     private var timer = Timer()
     
+    // determine if math is fast
+    private var fast: Bool = true
+    private var fastTimer = Timer()
+    
+    // sound effect
+    private var effectPlayer: AVAudioPlayer?
+    
     // declaring elements
     
     @IBOutlet weak var trueButton: UIButton!
@@ -41,6 +50,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var startShadow: UIView!
+    @IBOutlet weak var startLabel: UILabel!
     
     @IBOutlet weak var timerView: UIView!
     @IBOutlet weak var mainLabel: UILabel!
@@ -54,13 +64,19 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         width = view.frame.width
         height = view.frame.height
+        
+        highscore = UserDefaults.standard.integer(forKey: "highscore")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         formatScoreLabel()
         
-        mainLabel.text = "QUICK\nMATH"
+        mainLabel.text = "QUICK\nMATHS"
+        mainLabel.layer.shadowRadius = 0
+        mainLabel.layer.shadowOpacity = 0.5
+        mainLabel.layer.shadowOffset = CGSize(width: 0, height: 4)
+        mainLabel.layer.shadowColor = UIColor.white.cgColor
         
         trueButton.frame.origin.y = height
         trueShadow.frame.origin.y = height + 10
@@ -69,10 +85,23 @@ class ViewController: UIViewController {
         falseShadow.frame.origin.y = height + 10
     }
     
+    private func playSound(_ name: String) {
+        let path = Bundle.main.path(forResource: "\(name).wav", ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            effectPlayer = try AVAudioPlayer(contentsOf: url)
+            effectPlayer?.play()
+        } catch {
+            // couldn't load file :(
+        }
+    }
+    
     // format score label's appearance
     private func formatScoreLabel() {
         if highscore < score {
             highscore = score
+            UserDefaults.standard.set(highscore, forKey: "highscore")
             scoreLabel.text = "\(score)\nNEW BEST: \(highscore)"
         } else {
             scoreLabel.text = "\(score)\nBEST: \(highscore)"
@@ -87,6 +116,7 @@ class ViewController: UIViewController {
         return i
     }
     
+    // randomise values
     private func randomise() {
         // set if answer is true or false
         answer = arc4random_uniform(2) == 0
@@ -125,6 +155,8 @@ class ViewController: UIViewController {
         return "\(i1) \(sign) \(i2)\n= \(a)"
     }
     
+    @objc private func notFast() { fast = false }
+    
     // start game action
     private func start() {
         interval = 2
@@ -145,10 +177,12 @@ class ViewController: UIViewController {
             }, completion: { (Bool) in
                 self.randomise()
                 self.mainLabel.textColor = .white
+                self.mainLabel.layer.shadowColor = UIColor.white.cgColor
                 self.mainLabel.text = self.display()
                 self.score = 0
                 self.scoreLabel.text = "\(self.score)\n"
                 self.timer = Timer.scheduledTimer(timeInterval: self.interval + 0.5, target: self, selector: #selector(self.timeEnd), userInfo: nil, repeats: false)
+                self.fastTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.notFast), userInfo: nil, repeats: false)
                 UIView.animate(withDuration: self.interval + 0.5, animations: {
                     self.timerView.frame.size.height = 0
                 })
@@ -165,6 +199,7 @@ class ViewController: UIViewController {
         formatScoreLabel()
         mainLabel.text = "TOOOO\nSLOW!"
         mainLabel.textColor = falseButton.backgroundColor
+        mainLabel.layer.shadowColor = falseButton.backgroundColor?.cgColor
         trueButton.isUserInteractionEnabled = false
         falseButton.isUserInteractionEnabled = false
         UIView.animateKeyframes(withDuration: 0.25, delay: 0, options: [], animations: {
@@ -176,7 +211,7 @@ class ViewController: UIViewController {
             self.falseButton.frame.origin.y = self.height
             self.falseShadow.frame.origin.y = self.height + 10
             
-            self.mainLabel.transform = CGAffineTransform.identity.scaledBy(x: 2, y: 2).rotated(by: -CGFloat.pi/12)
+            self.mainLabel.transform = CGAffineTransform.identity.scaledBy(x: 2, y: 2).rotated(by: self.randomiseRotation())
         }) { (Bool) in
             UIView.animate(withDuration: 0.25, delay: 0, options: [], animations: {
                 self.startButton.frame.origin.y = self.height - 70
@@ -197,6 +232,7 @@ class ViewController: UIViewController {
         formatScoreLabel()
         mainLabel.text = "   WRONG!\n   WRONG!\n   WRONG!"
         mainLabel.textColor = falseButton.backgroundColor
+        mainLabel.layer.shadowColor = falseButton.backgroundColor?.cgColor
         trueButton.isUserInteractionEnabled = false
         falseButton.isUserInteractionEnabled = false
         UIView.animateKeyframes(withDuration: 0.25, delay: 0, options: [], animations: {
@@ -208,7 +244,7 @@ class ViewController: UIViewController {
             self.falseButton.frame.origin.y = self.height
             self.falseShadow.frame.origin.y = self.height + 10
             
-            self.mainLabel.transform = CGAffineTransform.identity.scaledBy(x: 2, y: 2).rotated(by: -CGFloat.pi/12)
+            self.mainLabel.transform = CGAffineTransform.identity.scaledBy(x: 2, y: 2).rotated(by: self.randomiseRotation())
         }) { (Bool) in
             UIView.animate(withDuration: 0.25, delay: 0, options: [], animations: {
                 self.startButton.frame.origin.y = self.height - 70
@@ -224,10 +260,17 @@ class ViewController: UIViewController {
         }
     }
     
+    // randomise a radian value for rotation
+    private func randomiseRotation() -> CGFloat {
+        return (CGFloat(arc4random_uniform(UInt32(CGFloat.pi * 100)))/100 - CGFloat.pi/2)/4
+    }
+    
     // check if answer is correct
     private func check(if x: Bool) {
         timer.invalidate()
+        fastTimer.invalidate()
         if x == answer {
+            playSound("correct")
             // increase score
             score += 1
             scoreLabel.text = "\(score)\n"
@@ -238,13 +281,32 @@ class ViewController: UIViewController {
                 self.timerView.frame.size.height = self.height
             })
             
+            if fast {
+                playSound("quick")
+                scoreLabel.text = "QUICK MATHS\n+5"
+                score += 4
+                UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+                    self.scoreLabel.transform = CGAffineTransform.identity.scaledBy(x: 1.5, y: 1.5).rotated(by: self.randomiseRotation())
+                }, completion: { (Bool) in
+                    UIView.animate(withDuration: 0.25, delay: 0.1, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+                        self.scoreLabel.transform = CGAffineTransform.identity.scaledBy(x: 1, y: 1).rotated(by: 0)
+                    }, completion: { (Bool) in
+                        self.scoreLabel.text = "\(self.score)\n"
+                    })
+                })
+            }
+            
+            fast = true
+            
             // decrease interval time
             interval = interval < 0 ? interval - 0.1 : interval
             timer = Timer.scheduledTimer(timeInterval: interval + 0.5, target: self, selector: #selector(self.timeEnd), userInfo: nil, repeats: false)
+            fastTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.notFast), userInfo: nil, repeats: false)
             UIView.animate(withDuration: interval + 0.4, delay: 0.1, options: .curveEaseOut, animations: {
                 self.timerView.frame.size.height = 0
             }, completion: nil)
         } else {
+            playSound("wrong")
             wrongEnd()
         }
     }
